@@ -1,0 +1,33 @@
+version: '3.3'
+services:
+  proxy:
+    image: proxy:1.0
+    ports:
+      - "81:80"
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PROXY=http://identidock:9090
+    networks:
+      front_net:
+
+  identidock:
+    image: kovtalex/identidock:1.0
+    environment:
+      ENV: PROD
+    networks:
+      back_net:
+      front_net:
+
+  dnmonster:
+    image: amouat/dnmonster:1.0
+    networks:
+      back_net:
+
+  redis:
+    image: redis:3.0
+    networks:
+      back_net:
+
+networks:
+  front_net:
+  back_net:
